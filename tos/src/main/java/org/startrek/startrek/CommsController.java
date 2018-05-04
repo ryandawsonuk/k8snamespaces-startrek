@@ -30,7 +30,7 @@ public class CommsController {
         return appName;
     }
 
-    @PostMapping
+    @PostMapping("call")
     public String respond(String caller){
         return String.format(replyString,caller,appName);
     }

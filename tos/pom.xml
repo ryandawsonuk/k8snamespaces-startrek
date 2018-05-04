@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.startrek</groupId>
-	<artifactId>startrek</artifactId>
+	<artifactId>tos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>startrek</name>
-	<description>Demo project for Spring Boot</description>
+	<name>startrek-tos</name>
+	<description>Namespaces demo - TOS</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

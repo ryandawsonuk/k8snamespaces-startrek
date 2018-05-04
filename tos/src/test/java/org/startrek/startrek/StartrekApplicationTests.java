@@ -26,13 +26,13 @@ public class StartrekApplicationTests {
 	public void testHome() {
 		ResponseEntity<String> entity = this.restTemplate.getForEntity("/", String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(entity.getBody()).contains("<title>Static");
+		assertThat(entity.getBody()).contains("<title>");
 	}
 
 	@Test
 	public void testCss() {
 		ResponseEntity<String> entity = this.restTemplate.getForEntity(
-				"/webjars/bootstrap/3.0.3/css/bootstrap.min.css", String.class);
+				"/webjars/bootstrap/3.3.6/css/bootstrap.min.css", String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getBody()).contains("body");
 		assertThat(entity.getHeaders().getContentType())
