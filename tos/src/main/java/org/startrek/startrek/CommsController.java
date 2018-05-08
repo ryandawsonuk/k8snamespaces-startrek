@@ -4,17 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class CommsController {
 
-    @Value("${captain.url}")
+    @Value("${captain.call.url}")
     private String captainUrl;
-    @Value("${science-officer.url}")
+    @Value("${science-officer.call.url}")
     private String scienceOfficerUrl;
-    @Value("${bridge.url}")
+    @Value("${bridge.call.url}")
     private String bridgeUrl;
 
     @Value("${spring.application.name}")
@@ -31,32 +32,23 @@ public class CommsController {
     }
 
     @PostMapping("call")
-    public String respond(String caller){
+    public String respond(@RequestBody String caller){
         return String.format(replyString,caller,appName);
     }
 
     @GetMapping(value = "bridge")
     public String callBridge(){
-
-        //TODO: perform post to bridge and return response
-
-        return String.format(replyString,appName,"bridge");
+        return restTemplate.postForEntity(bridgeUrl, appName, String.class).getBody();
     }
 
     @GetMapping(value = "captain")
     public String callCaptain(){
-
-        //TODO: perform post to captain and return response
-
-        return String.format(replyString,appName,"captain");
+        return restTemplate.postForEntity(captainUrl, appName, String.class).getBody();
     }
 
     @GetMapping(value = "science-officer")
     public String callScienceOfficer(){
-
-        //TODO: perform post to science officer and return response
-
-        return String.format(replyString,appName,"science officer");
+        return restTemplate.postForEntity(scienceOfficerUrl, appName, String.class).getBody();
     }
 
 

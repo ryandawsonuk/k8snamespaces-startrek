@@ -17,48 +17,19 @@
         $('#pageTitle').text(data);
         $('#picture').attr('src',data + '.jpg');
         $('#call-'+data).hide();
+    }).fail(function(error) {
+        alert('cannot retrieve app config: '+error.responseText);
     });
 
-    function callBridge(){
-        $.get( "bridge", function( data ) {
-
+    function call(callTo){
+        $.get( callTo, function( data ) {
             $('#communicatorPanel').text(data);
-        });
-    }
-
-    function callCaptain(){
-        $.get( "captain", function( data ) {
-
-            $('#communicatorPanel').text(data);
-        });
-    }
-
-    function callScienceOfficer(){
-        $.get( "science-officer", function( data ) {
-
-            $('#communicatorPanel').text(data);
+        }).fail(function(error) {
+            $('#communicatorPanel').text('cannot call '+callTo+': '+error.responseText);
         });
     }
 
 </script>
-<!--
-<div id="navbar" class="navbar navbar-default" role="navigation">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                data-target=".navbar-collapse">
-            <span class="icon-bar"></span> <span class="icon-bar"></span> <span
-                class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand"
-           href="https://github.com/spring-projects/spring-boot"> Spring Boot
-        </a>
-    </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li><a href="./"> Home </a></li>
-        </ul>
-    </div>
-</div> -->
 <div class="jumbotron">
     <h1 id="pageTitle">Bridge</h1>
     <img id="picture" src="bridge.jpg" class="img-fluid img-thumbnail" style="max-width: 70%; max-height: 35em;" />
@@ -67,9 +38,9 @@
         <div class="panel-body bg-danger h2" id="communicatorPanel"></div>
     </div>
     <p>
-        <a id="call-bridge" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="callBridge()">Call Bridge &raquo;</a>
-        <a id="call-captain" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="callCaptain()">Call Captain &raquo;</a>
-        <a id="call-science-officer" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="callScienceOfficer()">Call Science Officer &raquo;</a>
+        <a id="call-bridge" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="call('bridge')">Call Bridge &raquo;</a>
+        <a id="call-captain" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="call('captain')">Call Captain &raquo;</a>
+        <a id="call-science-officer" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="call('science-officer')">Call Science Officer &raquo;</a>
     </p>
 </div>
 <script type="text/javascript"
