@@ -1,0 +1,142 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tos
+  labels:
+    name: tos
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bridge
+  namespace: tos
+  labels:
+    serviceType: bridge
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: bridge
+      labels:
+        serviceType: bridge
+    spec:
+      containers:
+        - name: bridge
+          image: startrek/tos:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8080
+          env:
+          - name: JAVA_OPTS
+            value: -Xmx64m -Xms64m
+          - name: SPRING_APPLICATION_NAME
+            value: "bridge"
+          - name: CAPTAIN_CALL_URL
+            value: "http://captain:8080/call"
+          - name: SCIENCEOFFICER_CALL_URL
+            value: "http://science-officer:8080/call"
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: captain
+  namespace: tos
+  labels:
+    serviceType: captain
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: captain
+      labels:
+        serviceType: captain
+    spec:
+      containers:
+        - name: captain
+          image: startrek/tos:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8080
+          env:
+          - name: JAVA_OPTS
+            value: -Xmx64m -Xms64m
+          - name: SPRING_APPLICATION_NAME
+            value: "captain"
+          - name: BRIDGE_CALL_URL
+            value: "http://bridge:8080/call"
+          - name: SCIENCEOFFICER_CALL_URL
+            value: "http://science-officer:8080/call"
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: science-officer
+  namespace: tos
+  labels:
+    serviceType: science-officer
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: science-officer
+      labels:
+        serviceType: science-officer
+    spec:
+      containers:
+        - name: science-officer
+          image: startrek/tos:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8080
+          env:
+          - name: JAVA_OPTS
+            value: -Xmx64m -Xms64m
+          - name: SPRING_APPLICATION_NAME
+            value: "science-officer"
+          - name: CAPTAIN_CALL_URL
+            value: "http://captain:8080/call"
+          - name: BRIDGE_CALL_URL
+            value: "http://bridge:8080/call"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bridge
+  namespace: tos
+spec:
+  selector:
+    serviceType: bridge
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: captain
+  namespace: tos
+spec:
+  selector:
+    serviceType: captain
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30081
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: science-officer
+  namespace: tos
+spec:
+  selector:
+    serviceType: science-officer
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30082
+  type: NodePort
