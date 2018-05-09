@@ -33,6 +33,17 @@ To see all Pods
 
 `kubectl get pods --all-namespaces`
 
+## Cross the namespace divide
+
+Go to the k8sdescrioptor for tng and replace the value of SCIENCE_OFFICER_CALL_URL (http://science-officer:8080/call) with http://science-officer.tos.svc.cluster.local:8080/call. Save the change and do:
+
+`kubectl apply --force -f ./tng/k8sdescriptor.yaml` <br>
+`kubectl get pods --namespace=tng` <br/>
+
+Then kill the science officer pod with `kubectl delete pods science-officer-b77684cd5-4n6xk --namespace=tng` but using the pod name from the previous.
+
+Now TNG Bridge and Captain will be calling the Science Officer of TOS.
+
 ## To Clean up
 
 `kubectl delete namespaces tos` <br/>
