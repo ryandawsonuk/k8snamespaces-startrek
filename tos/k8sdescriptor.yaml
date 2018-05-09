@@ -6,6 +6,17 @@ metadata:
   labels:
     name: tos
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tos-config
+  namespace: tos
+data:
+  JAVA_OPTS: -Xmx64m -Xms64m
+  BRIDGE_CALL_URL: "http://bridge:8080/call"
+  CAPTAIN_CALL_URL: "http://captain:8080/call"
+  SCIENCEOFFICER_CALL_URL: "http://science-officer:8080/call"
+---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -28,14 +39,11 @@ spec:
           ports:
           - containerPort: 8080
           env:
-          - name: JAVA_OPTS
-            value: -Xmx64m -Xms64m
           - name: SPRING_APPLICATION_NAME
             value: "bridge"
-          - name: CAPTAIN_CALL_URL
-            value: "http://captain:8080/call"
-          - name: SCIENCEOFFICER_CALL_URL
-            value: "http://science-officer:8080/call"
+          envFrom:
+          - configMapRef:
+              name: tos-config
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -59,14 +67,11 @@ spec:
           ports:
           - containerPort: 8080
           env:
-          - name: JAVA_OPTS
-            value: -Xmx64m -Xms64m
           - name: SPRING_APPLICATION_NAME
             value: "captain"
-          - name: BRIDGE_CALL_URL
-            value: "http://bridge:8080/call"
-          - name: SCIENCEOFFICER_CALL_URL
-            value: "http://science-officer:8080/call"
+          envFrom:
+          - configMapRef:
+              name: tos-config
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -90,14 +95,11 @@ spec:
           ports:
           - containerPort: 8080
           env:
-          - name: JAVA_OPTS
-            value: -Xmx64m -Xms64m
           - name: SPRING_APPLICATION_NAME
             value: "science-officer"
-          - name: CAPTAIN_CALL_URL
-            value: "http://captain:8080/call"
-          - name: BRIDGE_CALL_URL
-            value: "http://bridge:8080/call"
+          envFrom:
+          - configMapRef:
+              name: tos-config
 ---
 apiVersion: v1
 kind: Service

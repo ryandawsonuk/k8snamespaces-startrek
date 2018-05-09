@@ -15,9 +15,9 @@ Build images by running the following from the subdirectories:
 `eval $(minikube docker-env)` <br/>
 `mvn clean install`
 
-Deploy from each subdirectory with
+Deploy with
  
-`kubectl create -f k8sdescriptor.yaml`
+`kubectl create -f ./tos/k8sdescriptor.yaml`
 
 To see the services: 
 
@@ -36,6 +36,6 @@ To see everything
 
 From each subdirectory
 
-`kubectl delete -f k8sdescriptor.yaml`
+`kubectl delete namespaces tos`
 
 Stop minikube with `minikube stop`
