@@ -42,6 +42,8 @@ Go to the k8sdescrioptor for tng and replace the value of SCIENCE_OFFICER_CALL_U
 
 Now TNG Bridge and Captain will be calling the Science Officer of TOS.
 
+If you want to be sure that it really is using this then replace 'science-officer.tos' with 'fred' and repeat.
+
 ## To Clean up
 
 `kubectl delete namespaces tos` <br/>
