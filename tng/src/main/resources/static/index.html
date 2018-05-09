@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Star Trek Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css"
+          href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
+</head>
+<body>
+<script type="text/javascript"
+        src="webjars/jquery/2.0.3/jquery.min.js">
+</script>
+<script type="text/javascript">
+
+    $.get( "app-name", function( data ) {
+        document.title=data;
+        $('#pageTitle').text(data);
+        $('#picture').attr('src',data + '.jpg');
+        $('#call-'+data).hide();
+    }).fail(function(error) {
+        alert('cannot retrieve app config: '+error.responseText);
+    });
+
+    function call(callTo){
+        $.get( callTo, function( data ) {
+            $('#communicatorPanel').text(data);
+        }).fail(function(error) {
+            $('#communicatorPanel').text('cannot call '+callTo+': '+error.responseText);
+        });
+    }
+
+</script>
+<div class="jumbotron">
+    <h1 id="pageTitle">Bridge</h1>
+    <img id="picture" src="bridge.jpg" class="img-fluid img-thumbnail" style="max-width: 70%; max-height: 35em;" />
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-body bg-danger h2" id="communicatorPanel"></div>
+    </div>
+    <p>
+        <a id="call-bridge" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="call('bridge')">Call Bridge &raquo;</a>
+        <a id="call-captain" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="call('captain')">Call Captain &raquo;</a>
+        <a id="call-science-officer" class="btn btn-lg btn-primary" href="#navbar" role="button" onclick="call('science-officer')">Call Science Officer &raquo;</a>
+    </p>
+</div>
+<script type="text/javascript"
+        src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>

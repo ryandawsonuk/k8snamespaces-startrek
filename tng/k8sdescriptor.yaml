@@ -1,0 +1,144 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tng
+  labels:
+    name: tng
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tng-config
+  namespace: tng
+data:
+  JAVA_OPTS: -Xmx64m -Xms64m
+  BRIDGE_CALL_URL: "http://bridge:8080/call"
+  CAPTAIN_CALL_URL: "http://captain:8080/call"
+  SCIENCEOFFICER_CALL_URL: "http://science-officer:8080/call"
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: bridge
+  namespace: tng
+  labels:
+    serviceType: bridge
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: bridge
+      labels:
+        serviceType: bridge
+    spec:
+      containers:
+        - name: bridge
+          image: startrek/tng:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8080
+          env:
+          - name: SPRING_APPLICATION_NAME
+            value: "bridge"
+          envFrom:
+          - configMapRef:
+              name: tng-config
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: captain
+  namespace: tng
+  labels:
+    serviceType: captain
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: captain
+      labels:
+        serviceType: captain
+    spec:
+      containers:
+        - name: captain
+          image: startrek/tng:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8080
+          env:
+          - name: SPRING_APPLICATION_NAME
+            value: "captain"
+          envFrom:
+          - configMapRef:
+              name: tng-config
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: science-officer
+  namespace: tng
+  labels:
+    serviceType: science-officer
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: science-officer
+      labels:
+        serviceType: science-officer
+    spec:
+      containers:
+        - name: science-officer
+          image: startrek/tng:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8080
+          env:
+          - name: SPRING_APPLICATION_NAME
+            value: "science-officer"
+          envFrom:
+          - configMapRef:
+              name: tng-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bridge
+  namespace: tng
+spec:
+  selector:
+    serviceType: bridge
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30083
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: captain
+  namespace: tng
+spec:
+  selector:
+    serviceType: captain
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30084
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: science-officer
+  namespace: tng
+spec:
+  selector:
+    serviceType: science-officer
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30085
+  type: NodePort
