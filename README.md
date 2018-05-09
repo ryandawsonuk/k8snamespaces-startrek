@@ -29,7 +29,7 @@ To see the services:
 `open http://$(minikube ip):30084` <br/>
 `open http://$(minikube ip):30085` <br/>
 
-To see everything
+To see all Pods
 
 `kubectl get pods --all-namespaces`
 
