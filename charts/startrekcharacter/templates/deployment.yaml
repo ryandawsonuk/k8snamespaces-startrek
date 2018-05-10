@@ -1,0 +1,67 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "startrekcharacter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "startrekcharacter.name" . }}
+    chart: {{ template "startrekcharacter.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "startrekcharacter.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "startrekcharacter.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+          - name: JAVA_OPTS
+            value: -Xmx64m -Xms64m
+          - name: SPRING_APPLICATION_NAME
+            value: {{ .Values.character.name }}
+          - name: BRIDGE_CALL_URL
+            {{- if .Values.bridge.call.url }}
+            value: {{ .Values.bridge.call.url }}
+            {{- else }}
+            value: "http://{{ .Release.Name }}-bridge:8080/call"
+            {{- end }}
+          - name: CAPTAIN_CALL_URL
+            {{- if .Values.captain.call.url }}
+            value: {{ .Values.captain.call.url }}
+            {{- else }}
+            value: "http://{{ .Release.Name }}-captain:8080/call"
+            {{- end }}
+          - name: SCIENCEOFFICER_CALL_URL
+            {{- if .Values.scienceofficer.call.url }}
+            value: {{ .Values.scienceofficer.call.url }}
+            {{- else }}
+            value: "http://{{ .Release.Name }}-science-officer:8080/call"
+            {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
