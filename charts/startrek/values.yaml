@@ -1,30 +1,29 @@
-# Default values for startrekcharacter.
+# Default values for startrek.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: startrek/tos
+  repository: &default_image startrek/tos
   tag: latest
   pullPolicy: IfNotPresent
 
-service:
-  type: NodePort
-  port: 30080
-
-character:
-  name: bridge
-
 bridge:
-  call:
-    url: ""
+  character:
+    name: bridge
+  image:
+    repository: *default_image
 captain:
-  call:
-    url: ""
+  character:
+    name: captain
+  image:
+    repository: *default_image
 scienceofficer:
-  call:
-    url: ""
+  character:
+    name: science-officer
+  image:
+    repository: *default_image
 
 ingress:
   enabled: false

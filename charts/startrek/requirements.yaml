@@ -1,0 +1,14 @@
+# parentchart/requirements.yaml
+dependencies:
+  - name: startrekcharacter
+    version: 0.1.0
+    alias: bridge
+    condition: bridge.enabled
+  - name: startrekcharacter
+    version: 0.1.0
+    alias: captain
+    condition: captain.enabled
+  - name: startrekcharacter
+    version: 0.1.0
+    alias: scienceofficer
+    condition: scienceofficer.enabled
