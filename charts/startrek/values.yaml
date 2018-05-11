@@ -4,26 +4,21 @@
 
 replicaCount: 1
 
-image:
-  repository: &default_image startrek/tos
-  tag: latest
-  pullPolicy: IfNotPresent
+global:
+  image:
+    repository: startrek/tos
+    tag: latest
+    pullPolicy: IfNotPresent
 
 bridge:
   character:
     name: bridge
-  image:
-    repository: *default_image
 captain:
   character:
     name: captain
-  image:
-    repository: *default_image
 scienceofficer:
   character:
     name: science-officer
-  image:
-    repository: *default_image
 
 ingress:
   enabled: false
