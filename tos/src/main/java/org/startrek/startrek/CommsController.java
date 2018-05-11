@@ -21,8 +21,6 @@ public class CommsController {
     @Value("${spring.application.name}")
     private String appName;
 
-    private String replyString = "yes %1$s, %2$s here";
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -33,7 +31,7 @@ public class CommsController {
 
     @PostMapping("call")
     public String respond(@RequestBody String caller){
-        return String.format(replyString,caller,appName);
+        return String.format("yes %1$s, %2$s here",caller,appName);
     }
 
     @GetMapping(value = "bridge")
