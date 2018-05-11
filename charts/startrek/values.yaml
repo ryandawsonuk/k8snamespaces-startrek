@@ -9,6 +9,15 @@ global:
     repository: startrek/tos
     tag: latest
     pullPolicy: IfNotPresent
+  bridge:
+    call:
+      url: ""
+  captain:
+    call:
+      url: ""
+  scienceofficer:
+    call:
+      url: ""
 
 bridge:
   character:
